@@ -45,7 +45,6 @@ class App extends Component {
       rightCol: imgWidth - (rawlocation.right_col * imgWidth),
       bottomRow: imgHeight - (rawlocation.bottom_row * imgHeight)
     };
-    console.log(boxLocation);
     this.setState({
       box: boxLocation
     });
