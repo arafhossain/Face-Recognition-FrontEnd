@@ -13,3 +13,7 @@ body {
     rgba(0, 132, 255, 1) 100%
   );
 }
+
+button {
+  cursor: pointer;
+}
