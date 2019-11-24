@@ -6,7 +6,7 @@ import Navigation from "./components/Navigation";
 import Logo from "./components/Logo";
 import Rank from "./components/Rank";
 import { LinkForm } from "./components/LinkForm";
-import FaceRecognition from "./components/FaceRecognition";
+import { FaceRecognition } from "./components/FaceRecognition";
 
 import "./App.css";
 
