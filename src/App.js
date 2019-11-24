@@ -5,7 +5,7 @@ import Clarifai from "clarifai";
 import Navigation from "./components/Navigation";
 import Logo from "./components/Logo";
 import Rank from "./components/Rank";
-import LinkForm from "./components/LinkForm";
+import { LinkForm } from "./components/LinkForm";
 import FaceRecognition from "./components/FaceRecognition";
 
 import "./App.css";
@@ -42,8 +42,8 @@ class App extends Component {
     let boxLocation = {
       leftCol: rawlocation.left_col * imgWidth,
       topRow: rawlocation.top_row * imgHeight,
-      rightCol: imgWidth - (rawlocation.right_col * imgWidth),
-      bottomRow: imgHeight - (rawlocation.bottom_row * imgHeight)
+      rightCol: imgWidth - rawlocation.right_col * imgWidth,
+      bottomRow: imgHeight - rawlocation.bottom_row * imgHeight
     };
     this.setState({
       box: boxLocation
@@ -78,7 +78,10 @@ class App extends Component {
           onInputChange={this.onInputChange}
           onButtonClick={this.onButtonClick}
         />
-        <FaceRecognition imageLink={this.state.imageLink} box={this.state.box}/>
+        <FaceRecognition
+          imageLink={this.state.imageLink}
+          box={this.state.box}
+        />
       </div>
     );
   }

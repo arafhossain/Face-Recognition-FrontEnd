@@ -1,23 +1,26 @@
 import React, { Component } from "react";
-import '../linkForm.css'
+import "../linkForm.css";
 
-export default class LinkForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  render() {
-    let {onInputChange, onButtonClick} = this.props;
-    return (
-      <div>
-        <p>Face detector in pictures</p>
-        <div className="centered">
-          <div className="form">
-            <input type="text" className="f4 center" onChange={onInputChange}/>
-            <button onClick={onButtonClick}>Detect</button>
-          </div>
+export let LinkForm = ({ onInputChange, onButtonClick }) => {
+  return (
+    <div>
+      <p className="f3">Submit an image link to detect faces!</p>
+      <div className="center">
+        <div className="form center pa4 br3 shadow-5">
+          <input
+            type="text"
+            className="f4 pa2 center w-70"
+            placeholder="Image link here"
+            onChange={onInputChange}
+          />
+          <button
+            className="w-30 grow f4 link ph3 pv2 dib white bg-light-purple"
+            onClick={onButtonClick}
+          >
+            Detect
+          </button>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
