@@ -13,7 +13,7 @@ export default class Logo extends Component {
       }
     };
     return (
-      <div className="ma4 mt0">
+      <div className="ma4">
         <Tilt className="Tilt br2 shadow-2" options={{ max: 55 }} style={styles.Tilt}>
           <div className="Tilt-inner pa3" style={styles.innerTilt}>
             <img src={brainLogo} alt="Logo" />

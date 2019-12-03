@@ -5,10 +5,10 @@ export default class Rank extends Component {
     return (
       <div>
         <div className="white f2">
-          Bla
+          {this.props.name}, your total entries count is:
           </div>
-          <div className="white f3">
-          Bla bla bla
+          <div className="white f1">
+          {this.props.entries}
           </div>
         </div>
     )

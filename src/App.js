@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Particles from "react-particles-js";
-import Clarifai from "clarifai";
-
+import Axios from "axios";
 import Logo from "./components/Logo";
 import Rank from "./components/Rank";
 import { LinkForm } from "./components/LinkForm";
@@ -24,9 +23,20 @@ let particlesConfig = {
   }
 };
 
-const app = new Clarifai.App({
-  apiKey: "ef4fe545a8d04777ab6ce3f61ac45a12"
-});
+let initialState = {
+  input: "",
+  imageLink: "",
+  box: {},
+  route: "signin",
+  signedIn: false,
+  user: {
+    id: "",
+    name: "",
+    email: "",
+    entries: 0,
+    joined: new Date()
+  }
+};
 
 class App extends Component {
   constructor(props) {
@@ -36,15 +46,35 @@ class App extends Component {
       imageLink: "",
       box: {},
       route: "signin",
-      signedIn: false
+      signedIn: false,
+      user: {
+        id: "",
+        name: "",
+        email: "",
+        entries: 0,
+        joined: new Date()
+      }
     };
     this.onInputChange = this.onInputChange.bind(this);
     this.getBoxLocation = this.getBoxLocation.bind(this);
     this.onRouteChange = this.onRouteChange.bind(this);
+    this.loadUser = this.loadUser.bind(this);
   }
 
-  getBoxLocation = data => {
-    let rawlocation = data.outputs[0].data.regions[0].region_info.bounding_box;
+  loadUser = ({ data }) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.joined
+      }
+    });
+  };
+
+  getBoxLocation = response => {
+    let rawlocation = response.data.outputs[0].data.regions[0].region_info.bounding_box;
     let image = document.getElementById("image");
     let imgWidth = Number(image.width);
     let imgHeight = Number(image.height);
@@ -65,51 +95,61 @@ class App extends Component {
 
   onButtonClick = () => {
     this.setState({ imageLink: this.state.input }, function() {
-      app.models
-        .predict(Clarifai.FACE_DETECT_MODEL, `${this.state.imageLink}`)
-        .then(
-          response => {
-            this.getBoxLocation(response);
+      let url = "http://localhost:3000/imageurl";
+      let params = { imageLink: this.state.imageLink };
+      Axios.post(url, params)
+        .then(response => {
+          if (response) {
+            let url = "http://localhost:3000/image";
+            let params = { id: this.state.user.id };
+            Axios.put(url, params).then(count => {
+              this.setState(
+                Object.assign(this.state.user, { entries: count.data })
+              );
+            })
+          this.getBoxLocation(response);
           }
-        )
+        })
         .catch(err => console.log(err));
     });
   };
 
   onRouteChange = newRoute => {
     if (newRoute === "signout") {
-      this.setState({ signedIn: false });
+      this.setState(initialState);
     } else if (newRoute === "home") {
       this.setState({ signedIn: true });
     }
     this.setState({ route: newRoute });
   };
   render() {
-    let {box, imageLink, signedIn, route} = this.state;
+    let { box, imageLink, signedIn, route } = this.state;
     return (
       <div className="App">
         <Particles params={particlesConfig} className="particles" />
-        <Navigation
-          signedIn={signedIn}
-          onRouteChange={this.onRouteChange}
-        />
+        <div className="navbar">
         <Logo />
+        <Navigation signedIn={signedIn} onRouteChange={this.onRouteChange} />
+        </div>
         {route === "home" ? (
           <>
-            <Rank />
+            <Rank
+              name={this.state.user.name}
+              entries={this.state.user.entries}
+            />
             <LinkForm
               onInputChange={this.onInputChange}
               onButtonClick={this.onButtonClick}
             />
-            <FaceRecognition
-              imageLink={imageLink}
-              box={box}
-            />
+            <FaceRecognition imageLink={imageLink} box={box} />
           </>
         ) : route === "signin" ? (
-          <SignIn onRouteChange={this.onRouteChange} />
+          <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
         ) : (
-          <Register onRouteChange={this.onRouteChange} />
+          <Register
+            onRouteChange={this.onRouteChange}
+            loadUser={this.loadUser}
+          />
         )}
       </div>
     );

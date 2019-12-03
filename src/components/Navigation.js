@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 
 export let Navigation = (props) => {
-  let styles = { signedOut: { display: "flex", justifyContent: "flex-end" } };
+  let styles = { signedOut: { display: "flex", justifyContent: "flex-end"} };
 
   if (props.signedIn) {
     return (
       <nav style={styles.signedOut}>
         <p
           onClick={() => props.onRouteChange("signout")}
-          className="f3 link dim black underline pa3 pointer"
+          className="f3 link dim black pa3 fw5 pointer"
         >
           Sign out
         </p>
@@ -19,13 +19,13 @@ export let Navigation = (props) => {
       <nav style={styles.signedOut}>
         <p
           onClick={() => props.onRouteChange("signin")}
-          className="f3 link dim black underline pa3 pointer"
+          className="f3 link dim black pa3 fw5 pointer"
         >
           Sign In
         </p>
         <p
           onClick={() => props.onRouteChange("register")}
-          className="f3 link dim black underline pa3 pointer"
+          className="f3 link dim black pa3 fw5 pointer"
         >
           Register
         </p>

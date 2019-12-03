@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "../FaceRecognition.css";
 
 export let FaceRecognition = ({ imageLink, box }) => {
