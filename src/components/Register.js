@@ -21,7 +21,7 @@ export class Register extends Component {
     this.setState({ password: event.target.value });
   };
   onSubmitSignIn = () => {
-    let url = "http://localhost:3000/register";
+    let url = "https://fast-temple-38246.herokuapp.com/register";
     let params = {
       email: this.state.email,
       password: this.state.password,

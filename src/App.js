@@ -95,12 +95,12 @@ class App extends Component {
 
   onButtonClick = () => {
     this.setState({ imageLink: this.state.input }, function() {
-      let url = "http://localhost:3000/imageurl";
+      let url = "https://fast-temple-38246.herokuapp.com/imageurl";
       let params = { imageLink: this.state.imageLink };
       Axios.post(url, params)
         .then(response => {
           if (response) {
-            let url = "http://localhost:3000/image";
+            let url = "https://fast-temple-38246.herokuapp.com/image";
             let params = { id: this.state.user.id };
             Axios.put(url, params).then(count => {
               this.setState(
